@@ -39,7 +39,7 @@ defmodule ChronalCalibration do
   defp find_repeats(results, [head | tail], frequencies) do
     result = hd(results) + head
 
-    if Enum.member?(results, result) do
+    if result in results do
       result
     else
       find_repeats([result] ++ results, tail, frequencies)
