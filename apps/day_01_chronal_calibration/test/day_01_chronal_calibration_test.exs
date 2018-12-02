@@ -1,4 +1,4 @@
-defmodule ChronalCalibrationTest do
+defmodule Day01ChronalCalibrationTest do
   use ExUnit.Case
 
   doctest ChronalCalibration
