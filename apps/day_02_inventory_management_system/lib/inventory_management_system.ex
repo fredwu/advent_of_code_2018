@@ -101,9 +101,7 @@ defmodule InventoryManagementSystem do
   def scan(id) do
     id
     |> String.graphemes()
-    |> Enum.reduce(%{}, fn n, acc ->
-      Map.update(acc, n, 1, & &1 + 1)
-    end)
+    |> Enum.reduce(%{}, & Map.update(&2, &1, 1, fn n -> n + 1 end))
     |> Map.values()
     |> Enum.filter(& &1 in [2, 3])
     |> Enum.uniq()
