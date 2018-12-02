@@ -66,8 +66,8 @@ defmodule InventoryManagementSystem do
       iex> ])
       12
   """
-  def checksum(ids) do
-    counts   = Enum.flat_map(ids, &scan/1)
+  def checksum(box_ids) do
+    counts   = Enum.flat_map(box_ids, &scan/1)
     count_2s = Enum.count(counts, & &1 == 2)
     count_3s = Enum.count(counts, & &1 == 3)
 
