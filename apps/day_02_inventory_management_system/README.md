@@ -1,5 +1,7 @@
 # Day 2: Inventory Management System
 
+## Part One
+
 You stop falling through time, catch your breath, and check the screen on the
 device. "Destination reached. Current Year: 1518. Current Location: North Pole
 Utility Closet 83N10." You made it! Now, to find those anomalies.
@@ -44,3 +46,27 @@ three of them contain a letter which appears exactly three times. Multiplying
 these together produces a checksum of `4 * 3 = 12`.
 
 __What is the checksum__ for your list of box IDs?
+
+## Part Two
+
+Confident that your list of box IDs is complete, you're ready to find the boxes
+full of prototype fabric.
+
+The boxes will have IDs which differ by exactly one character at the same
+position in both strings. For example, given the following box IDs:
+
+    abcde
+    fghij
+    klmno
+    pqrst
+    fguij
+    axcye
+    wvxyz
+
+The IDs `abcde` and `axcye` are close, but they differ by two characters (the
+second and fourth). However, the IDs `fghij` and `fguij` differ by exactly one
+character, the third (`h` and `u`). Those must be the correct boxes.
+
+__What letters are common between the two correct box IDs?__ (In the example
+above, this is found by removing the differing character from either ID,
+producing `fgij`.)
