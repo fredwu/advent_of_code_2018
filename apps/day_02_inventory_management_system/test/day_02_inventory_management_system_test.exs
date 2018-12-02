@@ -3,5 +3,8 @@ defmodule Day02InventoryManagementSystemTest do
 
   doctest InventoryManagementSystem
   doctest InventoryManagementSystem.Utils
+
+  @moduletag :output
+
   doctest InventoryManagementSystem.Output
 end
