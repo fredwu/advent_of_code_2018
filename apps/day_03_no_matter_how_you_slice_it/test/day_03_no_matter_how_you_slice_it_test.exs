@@ -4,7 +4,6 @@ defmodule Day03NoMatterHowYouSliceItTest do
   doctest NoMatterHowYouSliceIt
 
   @moduletag :output
-  @moduletag timeout: 300_000
 
   doctest NoMatterHowYouSliceIt.Output
 end

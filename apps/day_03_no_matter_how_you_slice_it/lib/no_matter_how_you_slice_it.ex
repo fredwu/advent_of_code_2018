@@ -25,7 +25,7 @@ defmodule NoMatterHowYouSliceIt do
       iex>   "#3 @ 5,5: 2x2",
       iex>   "#4 @ 4,4: 1x1",
       iex> ])
-      [{4, 4}, {5, 4}, {4, 5}, {5, 5}]
+      [{4, 4}, {4, 5}, {5, 4}, {5, 5}]
   """
   def overlaps(claims) do
     all =
@@ -35,7 +35,10 @@ defmodule NoMatterHowYouSliceIt do
         |> claim_coordinates()
       end)
 
-    Enum.uniq(all -- Enum.uniq(all))
+    all
+    |> Enum.reduce(%{}, & Map.update(&2, &1, 1, fn x -> x + 1 end))
+    |> Enum.filter(fn {_k, v} -> v > 1 end)
+    |> Enum.map(fn {k, _v} -> k end)
   end
 
   @doc """
