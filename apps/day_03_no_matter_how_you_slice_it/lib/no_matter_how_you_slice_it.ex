@@ -28,14 +28,11 @@ defmodule NoMatterHowYouSliceIt do
       [{4, 4}, {4, 5}, {5, 4}, {5, 5}]
   """
   def overlaps(claims) do
-    all =
-      Enum.flat_map(claims, fn claim ->
-        claim
-        |> parse_claim()
-        |> claim_coordinates()
-      end)
-
-    all
+    Enum.flat_map(claims, fn claim ->
+      claim
+      |> parse_claim()
+      |> claim_coordinates()
+    end)
     |> Enum.reduce(%{}, & Map.update(&2, &1, 1, fn x -> x + 1 end))
     |> Enum.filter(fn {_k, v} -> v > 1 end)
     |> Enum.map(fn {k, _v} -> k end)
