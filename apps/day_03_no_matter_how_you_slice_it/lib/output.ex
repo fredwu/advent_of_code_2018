@@ -10,4 +10,14 @@ defmodule NoMatterHowYouSliceIt.Output do
   def part_one do
     NoMatterHowYouSliceIt.overlaps_count(%Input{}.claims)
   end
+
+  @doc """
+  ## Examples
+
+      iex> NoMatterHowYouSliceIt.Output.part_two()
+      331
+  """
+  def part_two do
+    NoMatterHowYouSliceIt.id_without_overlaps(%Input{}.claims)
+  end
 end

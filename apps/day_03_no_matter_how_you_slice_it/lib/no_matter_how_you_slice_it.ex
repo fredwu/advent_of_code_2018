@@ -2,6 +2,52 @@ defmodule NoMatterHowYouSliceIt do
   @doc """
   ## Examples
 
+      iex> NoMatterHowYouSliceIt.id_without_overlaps([
+      iex>   "#1 @ 1,3: 4x4",
+      iex>   "#2 @ 3,1: 4x4",
+      iex>   "#3 @ 5,5: 2x2",
+      iex> ])
+      3
+  """
+  def id_without_overlaps(claims) do
+    string = without_overlaps(claims)
+
+    ~r/#(\d+)/
+    |> Regex.run(string, capture: :all_but_first)
+    |> hd()
+    |> String.to_integer()
+  end
+
+  @doc """
+  ## Examples
+
+      iex> NoMatterHowYouSliceIt.without_overlaps([
+      iex>   "#1 @ 1,3: 4x4",
+      iex>   "#2 @ 3,1: 4x4",
+      iex>   "#3 @ 5,5: 2x2",
+      iex> ])
+      "#3 @ 5,5: 2x2"
+  """
+  def without_overlaps(claims) do
+    sets =
+      claims
+      |> all_coordinates()
+      |> Enum.filter(fn {_k, v} -> v == 1 end)
+      |> Enum.map(fn {k, _v} -> k end)
+      |> MapSet.new()
+
+    Enum.find(claims, fn claim ->
+      claim
+      |> parse_claim()
+      |> claim_coordinates()
+      |> MapSet.new()
+      |> MapSet.subset?(sets)
+    end)
+  end
+
+  @doc """
+  ## Examples
+
       iex> NoMatterHowYouSliceIt.overlaps_count([
       iex>   "#1 @ 1,3: 4x4",
       iex>   "#2 @ 3,1: 4x4",
@@ -28,14 +74,19 @@ defmodule NoMatterHowYouSliceIt do
       [{4, 4}, {4, 5}, {5, 4}, {5, 5}]
   """
   def overlaps(claims) do
+    claims
+    |> all_coordinates()
+    |> Enum.filter(fn {_k, v} -> v > 1 end)
+    |> Enum.map(fn {k, _v} -> k end)
+  end
+
+  defp all_coordinates(claims) do
     Enum.flat_map(claims, fn claim ->
       claim
       |> parse_claim()
       |> claim_coordinates()
     end)
     |> Enum.reduce(%{}, & Map.update(&2, &1, 1, fn x -> x + 1 end))
-    |> Enum.filter(fn {_k, v} -> v > 1 end)
-    |> Enum.map(fn {k, _v} -> k end)
   end
 
   @doc """
