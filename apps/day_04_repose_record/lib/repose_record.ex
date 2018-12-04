@@ -1,8 +1,6 @@
 defmodule ReposeRecord do
   alias __MODULE__.ShiftParser
 
-  require Integer
-
   @doc """
   ## Examples
 
