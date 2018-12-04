@@ -62,12 +62,7 @@ defmodule ReposeRecord do
       records
       |> ShiftParser.parse_shifts()
       |> Enum.group_by(&Map.get(&1, "guard"), &{Map.get(&1, "sleep_duration"), Map.get(&1, "asleep")})
-      |> Enum.map(fn {guard, sleeps} ->
-        sleep_duration = Enum.reduce(sleeps, 0, fn {duration, _asleep}, acc -> duration + acc end)
-        sleep_minutes  = Enum.flat_map(sleeps, fn {_duration, asleep} -> asleep end)
-
-        {guard, sleep_duration, sleep_minutes}
-      end)
+      |> Enum.map(&sleep_accumulator/1)
       |> Enum.sort_by(fn {_guard, sleep_duration, _sleep_minutes} -> sleep_duration end, &>=/2)
       |> List.first()
 
@@ -78,5 +73,12 @@ defmodule ReposeRecord do
       |> hd()
 
     {guard, lazy_minute}
+  end
+
+  defp sleep_accumulator({guard, sleeps}) do
+    sleep_duration = Enum.reduce(sleeps, 0, fn {duration, _asleep}, acc -> duration + acc end)
+    sleep_minutes  = Enum.flat_map(sleeps, fn {_duration, asleep} -> asleep end)
+
+    {guard, sleep_duration, sleep_minutes}
   end
 end
