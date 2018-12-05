@@ -16,6 +16,82 @@ defmodule AlchemicalReduction do
   @doc """
   ## Examples
 
+      iex> AlchemicalReduction.units_sans_one_type("dabCBAcaDA")
+      4
+  """
+  def units_sans_one_type(polymer) do
+    unit_types()
+    |> Enum.map(& units_by(polymer, &1))
+    |> Enum.min()
+  end
+
+  @doc """
+  ## Examples
+
+      iex> AlchemicalReduction.units_by("dabAcCaCBAcCcaDA", ["A", "a"])
+      6
+
+      iex> AlchemicalReduction.units_by("dabAcCaCBAcCcaDA", ["B", "b"])
+      8
+
+      iex> AlchemicalReduction.units_by("dabAcCaCBAcCcaDA", ["C", "c"])
+      4
+
+      iex> AlchemicalReduction.units_by("dabAcCaCBAcCcaDA", ["D", "d"])
+      6
+  """
+  def units_by(polymer, units) do
+    polymer
+    |> fully_react_by(units)
+    |> String.length()
+  end
+
+  @doc """
+  ## Examples
+
+      iex> AlchemicalReduction.fully_react_by("dabAcCaCBAcCcaDA", ["A", "a"])
+      "dbCBcD"
+
+      iex> AlchemicalReduction.fully_react_by("dabAcCaCBAcCcaDA", ["B", "b"])
+      "daCAcaDA"
+
+      iex> AlchemicalReduction.fully_react_by("dabAcCaCBAcCcaDA", ["C", "c"])
+      "daDA"
+
+      iex> AlchemicalReduction.fully_react_by("dabAcCaCBAcCcaDA", ["D", "d"])
+      "abCBAc"
+  """
+  def fully_react_by(polymer, units) do
+    polymer
+    |> react_by(units)
+    |> react()
+  end
+
+  @doc """
+  ## Examples
+
+      iex> AlchemicalReduction.react_by("dabAcCaCBAcCcaDA", ["A", "a"])
+      "dbcCCBcCcD"
+
+      iex> AlchemicalReduction.react_by("dabAcCaCBAcCcaDA", ["B", "b"])
+      "daAcCaCAcCcaDA"
+
+      iex> AlchemicalReduction.react_by("dabAcCaCBAcCcaDA", ["C", "c"])
+      "dabAaBAaDA"
+
+      iex> AlchemicalReduction.react_by("dabAcCaCBAcCcaDA", ["D", "d"])
+      "abAcCaCBAcCcaA"
+  """
+  def react_by(polymer, units) do
+    polymer
+    |> String.codepoints()
+    |> Enum.reject(& Enum.member?(units, &1))
+    |> Enum.join()
+  end
+
+  @doc """
+  ## Examples
+
       iex> AlchemicalReduction.react("dabAcCaCBAcCcaDA")
       "dabCBAcaDA"
   """
@@ -76,5 +152,23 @@ defmodule AlchemicalReduction do
     <<b>> = b
 
     abs(a - b) == @codepoint_delta
+  end
+
+  @doc """
+  ## Examples
+
+      iex> AlchemicalReduction.unit_types() |> Enum.slice(0..1)
+      [
+        ["a", "A"],
+        ["b", "B"],
+      ]
+  """
+  def unit_types do
+    a = ?a..?z |> Enum.to_list() |> Enum.map(&List.to_string([&1]))
+    b = ?A..?Z |> Enum.to_list() |> Enum.map(&List.to_string([&1]))
+
+    a
+    |> Enum.zip(b)
+    |> Enum.map(&Tuple.to_list/1)
   end
 end

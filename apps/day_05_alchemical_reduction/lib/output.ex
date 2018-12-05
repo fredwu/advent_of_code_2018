@@ -10,4 +10,14 @@ defmodule AlchemicalReduction.Output do
   def part_one do
     AlchemicalReduction.units(%Input{}.polymer)
   end
+
+  @doc """
+  ## Examples
+
+      iex> AlchemicalReduction.Output.part_two()
+      5844
+  """
+  def part_two do
+    AlchemicalReduction.units_sans_one_type(%Input{}.polymer)
+  end
 end
