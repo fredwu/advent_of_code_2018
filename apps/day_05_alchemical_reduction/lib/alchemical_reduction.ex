@@ -113,7 +113,7 @@ defmodule AlchemicalReduction do
     {reduced_tokens, found} =
       Enum.reduce(tokens, {[], 0}, fn
         n, {[], _} ->
-          {[n], 1}
+          {[n], 0}
 
         n, {[m | rest] = t, found} ->
           if reactive?(n, m) do
@@ -123,7 +123,7 @@ defmodule AlchemicalReduction do
           end
       end)
 
-    if found > 1 do
+    if found > 0 do
       scan(reduced_tokens)
     else
       tokens
