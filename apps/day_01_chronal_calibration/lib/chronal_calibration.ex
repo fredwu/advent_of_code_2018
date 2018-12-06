@@ -16,6 +16,35 @@ defmodule ChronalCalibration do
   @doc """
   ## Examples
 
+      iex> ChronalCalibration.first_repeats_v2([+1, -1])
+      0
+
+      iex> ChronalCalibration.first_repeats_v2([+3, +3, +4, -2, -4])
+      10
+
+      iex> ChronalCalibration.first_repeats_v2([-6, +3, +8, +5, -6])
+      5
+
+      iex> ChronalCalibration.first_repeats_v2([+7, +7, -2, -7, -4])
+      14
+  """
+  def first_repeats_v2(frequencies) do
+    frequencies
+    |> Stream.cycle()
+    |> Enum.reduce_while([0], fn n, [prev | _] = acc ->
+      m = n + prev
+
+      if m in acc do
+        {:halt, m}
+      else
+        {:cont, [m | acc]}
+      end
+    end)
+  end
+
+  @doc """
+  ## Examples
+
       iex> ChronalCalibration.first_repeats([+1, -1])
       0
 
