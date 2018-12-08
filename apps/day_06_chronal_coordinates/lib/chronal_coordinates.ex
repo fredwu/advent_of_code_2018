@@ -1,5 +1,26 @@
 defmodule ChronalCoordinates do
-  alias __MODULE__.{Coordinates, Owners}
+  alias __MODULE__.{Coordinates, Distances, Owners}
+
+  @doc """
+  ## Examples
+
+      iex> ChronalCoordinates.safe_distance_size([
+      iex>   {1, 1},
+      iex>   {1, 6},
+      iex>   {8, 3},
+      iex>   {3, 4},
+      iex>   {5, 5},
+      iex>   {8, 9},
+      iex> ], 32)
+      16
+  """
+  def safe_distance_size(coordinates, safe_distance) do
+    coordinates
+    |> Coordinates.origin_max_coordinates()
+    |> Coordinates.all_coordinates()
+    |> Enum.filter(& Distances.coordinate_distance(&1, coordinates) < safe_distance)
+    |> Enum.count()
+  end
 
   @doc """
   ## Examples
