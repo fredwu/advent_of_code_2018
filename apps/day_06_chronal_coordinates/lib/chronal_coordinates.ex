@@ -20,9 +20,9 @@ defmodule ChronalCoordinates do
 
     {_owner, owner_coordinates} =
       map
-      |> Enum.filter(fn {_, owner} -> Enum.member?(owners, owner) end)
       |> Enum.group_by(fn {_, owner} -> owner end)
-      |> Enum.sort_by(fn {_, count} -> count end, &>=/2)
+      |> Map.take(owners)
+      |> Enum.sort_by(fn {_, items} -> Enum.count(items) end, &>=/2)
       |> hd()
 
     Enum.count(owner_coordinates)
@@ -60,8 +60,6 @@ defmodule ChronalCoordinates do
       map
       |> Map.take(boundary_coordinates)
       |> Map.values()
-      |> Enum.uniq()
-      |> List.delete(".")
 
     coordinates
     |> map_owners()
