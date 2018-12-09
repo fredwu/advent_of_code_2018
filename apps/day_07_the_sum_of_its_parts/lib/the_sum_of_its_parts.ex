@@ -25,13 +25,8 @@ defmodule TheSumOfItsParts do
 
   defp sort_steps(steps, step, first_steps, output) do
     next_steps      = first_steps ++ Map.get(steps, step)
-    remaining_steps = Map.delete(steps, step)
-
-    blocked_steps =
-      remaining_steps
-      |> Map.values()
-      |> List.flatten()
-      |> Enum.uniq()
+    remaining_steps = steps |> Map.delete(step)
+    blocked_steps   = remaining_steps |> Map.values() |> List.flatten()
 
     case next_steps -- blocked_steps do
       [] -> output
