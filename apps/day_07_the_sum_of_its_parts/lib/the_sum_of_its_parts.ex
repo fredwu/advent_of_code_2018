@@ -16,15 +16,13 @@ defmodule TheSumOfItsParts do
       "CABDFE"
   """
   def order(instructions) do
-    [first | first_steps] = Parser.parse_first_steps(instructions)
-
     instructions
-    |> Parser.parse_all()
-    |> sort_steps(first, first_steps, first)
+    |> Parser.parse_all_steps()
+    |> sort_steps(".")
   end
 
-  defp sort_steps(steps, step, first_steps, output) do
-    next_steps      = first_steps ++ Map.get(steps, step)
+  defp sort_steps(steps, step, output \\ "") do
+    next_steps      = steps |> Map.get(step)
     remaining_steps = steps |> Map.delete(step)
     blocked_steps   = remaining_steps |> Map.values() |> List.flatten()
 
@@ -41,7 +39,7 @@ defmodule TheSumOfItsParts do
           end)
           |> Enum.into(%{})
 
-        sort_steps(remaining_steps, next_step, [], output <> next_step)
+        sort_steps(remaining_steps, next_step, output <> next_step)
     end
   end
 

@@ -2,6 +2,36 @@ defmodule TheSumOfItsParts.Parser do
   @doc """
   ## Examples
 
+      iex> TheSumOfItsParts.Parser.parse_all_steps([
+      iex>   "Step C must be finished before step A can begin.",
+      iex>   "Step C must be finished before step F can begin.",
+      iex>   "Step A must be finished before step B can begin.",
+      iex>   "Step A must be finished before step D can begin.",
+      iex>   "Step B must be finished before step E can begin.",
+      iex>   "Step D must be finished before step E can begin.",
+      iex>   "Step F must be finished before step E can begin.",
+      iex> ])
+      %{
+        "." => ["C"],
+        "A" => ["B", "D"],
+        "B" => ["E"],
+        "C" => ["A", "F"],
+        "D" => ["E"],
+        "E" => [],
+        "F" => ["E"],
+      }
+  """
+  def parse_all_steps(instructions) do
+    first_steps = parse_first_steps(instructions)
+
+    instructions
+    |> parse_all()
+    |> Map.put(".", first_steps)
+  end
+
+  @doc """
+  ## Examples
+
       iex> TheSumOfItsParts.Parser.parse_first_steps([
       iex>   "Step C must be finished before step A can begin.",
       iex>   "Step C must be finished before step F can begin.",
