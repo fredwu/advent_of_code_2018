@@ -23,7 +23,6 @@ defmodule TheSumOfItsParts do
     |> sort_steps(first, first_steps, first)
   end
 
-  defp sort_steps([], _step, _first_steps, output), do: output
   defp sort_steps(steps, step, first_steps, output) do
     next_steps      = first_steps ++ Map.get(steps, step)
     remaining_steps = Map.delete(steps, step)
