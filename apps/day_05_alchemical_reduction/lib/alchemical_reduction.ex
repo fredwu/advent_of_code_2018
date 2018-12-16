@@ -147,10 +147,7 @@ defmodule AlchemicalReduction do
       iex> AlchemicalReduction.reactive?("a", "b")
       false
   """
-  def reactive?(a, b) do
-    <<a>> = a
-    <<b>> = b
-
+  def reactive?(<<a>>, <<b>>) do
     abs(a - b) == @codepoint_delta
   end
 
